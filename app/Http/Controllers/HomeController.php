@@ -201,11 +201,13 @@ class HomeController extends Controller
         }else{
             $history = GetBooks::select('id', 'book_id', 'student_id', 'status')->where('status', $con)->get();
             $data = '';
-            $i =1;
+            $i =0;
             $CSRFToken = csrf_token();
 
             foreach ($history as $h){
+
                 if($h->status ==0 ||$h->status ==1 ||$h->status ==2 || $h->status==4){
+                    $i++;
                     $data .='<tr>
                         <th scope="row">'.$i.'</th>
                         <td>'.$h->aboutBook->name.'</td>
@@ -243,8 +245,9 @@ class HomeController extends Controller
 
                         </td>
                     </tr>' ;
+
                 }
-                $i++;
+
             }
         }
         return $data;

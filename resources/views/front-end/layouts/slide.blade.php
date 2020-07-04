@@ -15,7 +15,7 @@
                             </div>
 
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>{{$s->title}}</h5>
+                                <h3>{{$s->title}}</h3>
                                 <p>{{$s->description}}</p>
                             </div>
                         </div>
@@ -26,7 +26,7 @@
                             </div>
 
                             <div class="carousel-caption d-none d-md-block">
-                                <h5>{{$s->title}}</h5>
+                                <h3>{{$s->title}}</h3>
                                 <p>{{$s->description}}</p>
                             </div>
                         </div>

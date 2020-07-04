@@ -114,3 +114,6 @@ button.my-2.my-sm-0{
     display: block!important;
 }
 button:focus {outline:none!important;}
+header#header a.nav-link{
+    font-weight: bold;
+}

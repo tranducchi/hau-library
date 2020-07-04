@@ -1,6 +1,6 @@
 <header id="header">
     <h1 class="text-center p-3">
-        Brand Logo
+        <img src="{{asset('/storage/covers/logo.png')}}" style="width: 20%;">
     </h1>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
