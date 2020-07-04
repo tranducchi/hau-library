@@ -139,7 +139,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        Darryldecode\Cart\CartServiceProvider::class, // cart
+
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -190,7 +190,7 @@ return [
     */
 
     'aliases' => [
-        'Cart' => Gloudemans\Shoppingcart\Facades\Cart::class,
+        'Cart'      => Darryldecode\Cart\Facades\CartFacade::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,
