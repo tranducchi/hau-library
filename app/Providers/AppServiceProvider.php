@@ -26,14 +26,25 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        
         $cat = Categories::select('id','name', 'slug', 'description')->get();
-        View::share('cat_h', $cat);
+        if($cat){
+            View::share('cat_h', $cat);
+        }
+       
         $slide = Slide::select('title', 'description', 'image')->get();
-        View::share('slide_h', $slide);
+        if($slide){
+            View::share('slide_h', $slide);
+        }
         $rq = GetBooks::where('status',1)->get()->count();
         $rf = GetBooks::where('status',3)->get()->count();
+        
         View::share('rq', $rq);
+     
+       
         View::share('rf', $rf);
+        
+      
 
     }
 }

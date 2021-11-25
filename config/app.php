@@ -139,7 +139,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
-        Darryldecode\Cart\CartServiceProvider::class, // cart
+        // Darryldecode\Cart\CartServiceProvider::class, // cart
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,

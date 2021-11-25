@@ -62,10 +62,12 @@
                 <li class="nav-item has-treeview">
                     <a href="#" class="nav-link">
                         <i class="nav-icon fa fa fa-clipboard"></i>
-                        <span class="badge badge-info right">@if($rq || $rf)
+                        @if($rq || $rf !==null)
+                        <span class="badge badge-info right">
                                                                  {{$rq+$rf}}
-                            @endif
+                          
                         </span>
+                        @endif
                         <p>
                             Mượn sách
 
@@ -77,20 +79,24 @@
                             <a href="/admin/order" class="nav-link">
                                 <i class="fa fa-deaf nav-icon"></i>
                                 <p>Yêu cầu</p>
+                                @if($rq ?? '')
                                 <span class="badge badge-warning right">
-                                    @if($rq)
-                                        {{$rq}}
-                                        @endif
+                                 
+                                        {{$rq ?? ''}}
+                                       
                                 </span>
+                                @endif
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="/admin/refund/list" class="nav-link">
                                 <i class="fa fa-paper-plane nav-icon"></i>
                                 <p>Trả sách</p>
-                                <span class="badge badge-warning right"> @if($rf)
-                                        {{$rf}}
-                                    @endif</span>
+                                    @if($rf ?? '')
+                                <span class="badge badge-warning right"> 
+                                        {{$rf ?? ''}}
+                                    </span>
+                                    @endif
                             </a>
                         </li>
                         <li class="nav-item">
