@@ -27,17 +27,24 @@ class LoginController extends Controller
      * @var string
      */
 
+//    public function authenticate(Request $request)
+//    {
+//        $credentials = $request->only('student_id', 'password');
+//        if (Auth::attempt($credentials)) {
+//            // Authentication passed...
+//            return redirect()->intended('/admin');
+//        }
+//    }
+     public function redirectPath()
+     {
+         if (\Auth::user()->role == '1') {
+             return "/admin";
+             // or return route('routename');
+         }
 
-    public function redirectPath()
-    {
-        if (\Auth::user()->role == '1') {
-            return "/admin";
-            // or return route('routename');
-        }
-
-        return "/";
-        $redirectTo = RouteServiceProvider::HOME;
-    }
+         return "/";
+         $redirectTo = RouteServiceProvider::HOME;
+     }
     /**
      * Create a new controller instance.
      *

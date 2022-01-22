@@ -15,8 +15,8 @@ class AdminController extends Controller
         $b  = Books::all()->count();
         $u = User::all()->count();
         $x = Books::sum('quantity');
-        $less =number_format(100-($gb/$x)*100);
-     
+       // $less =number_format(100-($gb/$x)*100);
+        $less=5;
         return view('admin.home', compact('gb', 'b', 'less', 'x', 'u'));
     }
 }

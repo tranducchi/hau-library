@@ -2,10 +2,14 @@
 
 namespace Gloudemans\Shoppingcart;
 
+use Gloudemans\Shoppingcart\Calculation\DefaultCalculator;
 use Gloudemans\Shoppingcart\Contracts\Buyable;
+use Gloudemans\Shoppingcart\Contracts\Calculator;
+use Gloudemans\Shoppingcart\Exceptions\InvalidCalculatorException;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Support\Arr;
+use ReflectionClass;
 
 /**
  * @property-read mixed discount
@@ -387,63 +391,22 @@ class CartItem implements Arrayable, Jsonable
                 if (isset($this->associatedModel)) {
                     return with(new $this->associatedModel())->find($this->id);
                 }
+                // no break
             case 'modelFQCN':
                 if (isset($this->associatedModel)) {
                     return $this->associatedModel;
                 }
+                // no break
             case 'weightTotal':
                 return round($this->weight * $this->qty, $decimals);
         }
 
-        if (config('cart.gross_price')) {
-            switch ($attribute) {
-                case 'priceNet':
-                    return round($this->price / (1 + ($this->taxRate / 100)), $decimals);
-                case 'discount':
-                    return $this->priceNet * ($this->discountRate / 100);
-                case 'tax':
-                    return round($this->priceTarget * ($this->taxRate / 100), $decimals);
-                case 'priceTax':
-                    return round($this->priceTarget + $this->tax, $decimals);
-                case 'discountTotal':
-                    return round($this->discount * $this->qty, $decimals);
-                case 'priceTotal':
-                    return round($this->priceNet * $this->qty, $decimals);
-                case 'subtotal':
-                    return round($this->priceTotal - $this->discountTotal, $decimals);
-                case 'priceTarget':
-                    return round(($this->priceTotal - $this->discountTotal) / $this->qty, $decimals);
-                case 'taxTotal':
-                    return round($this->subtotal * ($this->taxRate / 100), $decimals);
-                case 'total':
-                    return round($this->subtotal + $this->taxTotal, $decimals);
-                default:
-                    return;
-            }
-        } else {
-            switch ($attribute) {
-                case 'discount':
-                    return $this->price * ($this->discountRate / 100);
-                case 'tax':
-                    return round($this->priceTarget * ($this->taxRate / 100), $decimals);
-                case 'priceTax':
-                    return round($this->priceTarget + $this->tax, $decimals);
-                case 'discountTotal':
-                    return round($this->discount * $this->qty, $decimals);
-                case 'priceTotal':
-                    return round($this->price * $this->qty, $decimals);
-                case 'subtotal':
-                    return round($this->priceTotal - $this->discountTotal, $decimals);
-                case 'priceTarget':
-                    return round(($this->priceTotal - $this->discountTotal) / $this->qty, $decimals);
-                case 'taxTotal':
-                    return round($this->subtotal * ($this->taxRate / 100), $decimals);
-                case 'total':
-                    return round($this->subtotal + $this->taxTotal, $decimals);
-                default:
-                    return;
-            }
+        $class = new ReflectionClass(config('cart.calculator', DefaultCalculator::class));
+        if (!$class->implementsInterface(Calculator::class)) {
+            throw new InvalidCalculatorException('The configured Calculator seems to be invalid. Calculators have to implement the Calculator Contract.');
         }
+
+        return call_user_func($class->getName().'::getAttribute', $attribute, $this);
     }
 
     /**
@@ -561,5 +524,16 @@ class CartItem implements Arrayable, Jsonable
         }
 
         return number_format($value, $decimals, $decimalPoint, $thousandSeperator);
+    }
+
+    /**
+     * Getter for the raw internal discount rate.
+     * Should be used in calculators.
+     *
+     * @return float
+     */
+    public function getDiscountRate()
+    {
+        return $this->discountRate;
     }
 }
